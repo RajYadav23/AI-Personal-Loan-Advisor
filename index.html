@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Personal Loan Adviser</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            padding: 15px 40px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar:hover {
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.98), rgba(118, 75, 162, 0.98));
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .logo::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo:hover::after {
+            opacity: 1;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #00c6fb, #005bea);
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 198, 251, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: rotate(15deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(0, 198, 251, 0.6);
+        }
+
+        .logo-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #00c6fb, #005bea, #00c6fb);
+            border-radius: 50%;
+            z-index: -1;
+            animation: borderRotate 3s linear infinite;
+        }
+
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .logo i {
+            font-size: 20px;
+            color: white;
+            transition: transform 0.3s ease;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo span {
+            font-size: 1.5em;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(to right, #ffffff, #e0e0e0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo:hover span {
+            letter-spacing: 1px;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            border-radius: 20px;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::before {
+            opacity: 1;
+        }
+
+        .nav-links a i {
+            margin-right: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-links a:hover i {
+            transform: translateY(-2px) scale(1.2);
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 800px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #2d3436;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+        }
+
+        .header p {
+            color: #636e72;
+            font-size: 1.1em;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .input-section textarea {
+            width: 100%;
+            height: 150px;
+            padding: 15px;
+            border: 2px solid #dfe6e9;
+            border-radius: 10px;
+            font-size: 1em;
+            resize: none;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .input-section textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2), inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-section textarea::placeholder {
+            color: #a0a0a0;
+            font-style: italic;
+        }
+
+        .button {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .button i {
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+
+        .button:hover i {
+            transform: rotate(15deg);
+        }
+
+        .response-section {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(248, 249, 250, 0.9);
+            border-radius: 10px;
+            min-height: 200px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .response-section:hover {
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .response-section h2 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .response-section h2 i {
+            color: #667eea;
+            transition: transform 0.3s ease;
+        }
+
+        .response-section:hover h2 i {
+            transform: scale(1.2);
+        }
+
+        .response-content {
+            color: #2d3436;
+            line-height: 1.6;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+
+        .highlight-point {
+            background: linear-gradient(120deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            border-left: 4px solid #667eea;
+        }
+
+        .highlight-point h4 {
+            color: #667eea;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .highlight-point p {
+            margin: 0;
+            color: #2d3436;
+        }
+
+        .key-stat {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .important-note {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 10px 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section h2 {
+            color: #2d3436;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 3px;
+        }
+
+        .section p {
+            color: #636e72;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+            letter-spacing: 0.3px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-card {
+            background: rgba(248, 249, 250, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        .feature-card i {
+            font-size: 2.5em;
+            color: #667eea;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+            color: #764ba2;
+        }
+
+        .feature-card h3 {
+            color: #2d3436;
+            margin-bottom: 10px;
+            transition: color 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+
+        .feature-card:hover h3 {
+            color: #667eea;
+        }
+
+        .feature-card p {
+            color: #636e72;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        .additional-features {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .additional-feature {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 249, 250, 0.9));
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .additional-feature::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.3s ease;
+        }
+
+        .additional-feature:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .additional-feature:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .additional-feature h3 {
+            color: #2d3436;
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .additional-feature h3 i {
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .additional-feature p {
+            color: #636e72;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        footer {
+            background: linear-gradient(90deg, rgba(102, 126, 234, 0.95), rgba(118, 75, 162, 0.95));
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+        }
+
+        .footer-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            border-radius: 15px;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-links a:hover::before {
+            opacity: 1;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.2em;
+            transition: all 0.3s ease;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-links a:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .main-content {
+                padding: 80px 15px;
+            }
+
+            .container, .section {
+                padding: 30px 20px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .footer-links {
+                justify-content: center;
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+        }
+
+        #about {
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d3436;
+            font-weight: 500;
+            font-size: 1.1em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            outline: none;
+        }
+
+        .credit-score-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .loan-suggestions {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .loan-suggestion-item {
+            padding: 15px;
+            margin-bottom: 15px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .loan-suggestion-item h3 {
+            color: #2d3436;
+            margin-bottom: 10px;
+        }
+
+        .loan-suggestion-item p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .loan-suggestion-item .interest-rate {
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .loan-type-select {
+            font-size: 1.1em;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .loan-type-select:hover {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .loan-type-select option {
+            padding: 10px;
+            font-size: 1em;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .learn-button {
+            background: linear-gradient(90deg, #4CAF50, #45a049);
+        }
+
+        .learn-button:hover {
+            background: linear-gradient(90deg, #45a049, #3d8b40);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <div class="logo-container">
+                <i class="fas fa-robot"></i>
+            </div>
+            <span>LoanAI</span>
+        </div>
+        <div class="nav-links">
+            <a href="#home" onclick="showSection('home')"><i class="fas fa-home"></i> Home</a>
+            <a href="#about" onclick="showSection('about')"><i class="fas fa-info-circle"></i> About</a>
+            <a href="#features" onclick="showSection('features')"><i class="fas fa-star"></i> Features</a>
+            <a href="#contact" onclick="showSection('contact')"><i class="fas fa-envelope"></i> Contact</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div id="home" class="container active">
+            <div class="header">
+                <h1>AI Personal Loan Adviser</h1>
+                <p>Get personalized loan advice powered by AI</p>
+            </div>
+            
+            <div class="input-section">
+                <textarea id="userPrompt" placeholder="Describe your financial situation and loan requirements..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="loanType">Loan Type</label>
+                <select id="loanType" name="loanType" required class="loan-type-select">
+                    <option value="">Select Loan Type</option>
+                    <option value="home">🏠 Home Loan / Mortgage</option>
+                    <option value="student">🎓 Student Loan</option>
+                    <option value="personal">💳 Personal Loan</option>
+                    <option value="auto">🚗 Auto Loan</option>
+                    <option value="business">💼 Business Loan</option>
+                    <option value="debt">💰 Debt Consolidation Loan</option>
+                    <option value="medical">🏥 Medical Loan</option>
+                    <option value="wedding">💍 Wedding Loan</option>
+                    <option value="vacation">✈️ Vacation Loan</option>
+                    <option value="home-improvement">🔨 Home Improvement Loan</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="creditScore">Credit Score</label>
+                <input type="number" id="creditScore" name="creditScore" min="300" max="850" required>
+                <div class="credit-score-info">
+                    <p>Enter your credit score (300-850). This will help us suggest the best loan options for you.</p>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button class="button" onclick="getPersonalizedAdvice()">
+                    <i class="fas fa-robot"></i>
+                    Get Personalized Loan Advice
+                </button>
+
+                <button class="button learn-button" onclick="learnAboutLoans()">
+                    <i class="fas fa-book"></i>
+                    Learn About Loans
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="loading-spinner"></div>
+            </div>
+
+            <div class="response-section">
+                <h2><i class="fas fa-comment-dots"></i> AI Response</h2>
+                <div class="response-content" id="aiResponse">
+                    Your loan advice will appear here...
+                </div>
+            </div>
+        </div>
+
+        <div id="about" class="section">
+            <h2>About Us</h2>
+            <p>LoanAI is your trusted partner in making informed financial decisions. Our advanced AI technology provides personalized loan advice based on your unique financial situation.</p>
+            <p>We understand that every individual's financial journey is different, and that's why we've developed a sophisticated AI system that takes into account multiple factors to provide you with the most relevant loan advice.</p>
+            <p>Our mission is to make financial advice accessible to everyone, helping you make better decisions about your loans and financial future.</p>
+        </div>
+
+        <div id="features" class="section">
+            <h2>Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h3>AI-Powered Analysis</h3>
+                    <p>Advanced AI algorithms analyze your financial situation to provide personalized advice.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Instant Responses</h3>
+                    <p>Get immediate feedback and advice on your loan requirements.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Secure & Private</h3>
+                    <p>Your financial information is handled with the utmost security and privacy.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Comprehensive Advice</h3>
+                    <p>Receive detailed analysis and recommendations for your loan situation.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="contact" class="section">
+            <h2>Contact Us</h2>
+            <p>Have questions or need assistance? We're here to help!</p>
+            <p>Email: support@loanai.com</p>
+            <p>Phone: +1 (555) 123-4567</p>
+            <p>Address: 123 Financial Street, Tech City, TC 12345</p>
+        </div>
+
+        <div class="loan-suggestions" id="loanSuggestions">
+            <h2>Recommended Loan Options</h2>
+            <div id="suggestionsList"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#home" onclick="showSection('home')">Home</a>
+                <a href="#about" onclick="showSection('about')">About</a>
+                <a href="#features" onclick="showSection('features')">Features</a>
+                <a href="#contact" onclick="showSection('contact')">Contact</a>
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.container, .section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show the selected section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        async function getPersonalizedAdvice() {
+            const userPrompt = document.getElementById('userPrompt').value;
+            const creditScore = document.getElementById('creditScore').value;
+            const loanType = document.getElementById('loanType').value;
+            const loading = document.getElementById('loading');
+            const aiResponse = document.getElementById('aiResponse');
+
+            if (!loanType) {
+                alert('Please select a loan type');
+                return;
+            }
+
+            if (!creditScore) {
+                alert('Please enter your credit score');
+                return;
+            }
+            const score = parseInt(creditScore);
+            if (score < 300 || score > 850) {
+                alert('Please enter a valid credit score between 300 and 850');
+                return;
+            }
+
+            loading.style.display = 'block';
+            aiResponse.textContent = '';
+
+            try {
+                let creditTier = '';
+                if (score >= 800) creditTier = 'excellent';
+                else if (score >= 700) creditTier = 'good';
+                else if (score >= 600) creditTier = 'fair';
+                else creditTier = 'poor';
+
+                const prompt = `As a professional financial adviser, provide concise advice (max 150 words) for someone who described their financial situation as "${userPrompt}" and has a ${creditTier} credit score of ${score} who needs a ${loanType} loan. 
+                
+                Structure the response with these sections:
+                1. Loan Options (specific types and their benefits)
+                2. Financial Considerations (key factors to evaluate)
+                3. Recommended Actions (clear next steps)
+                
+                Use professional language and focus on practical, actionable advice.`;
+
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAoYQA-k1emH9iypGE4FOwuC4W5HOcROQA', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+                    const advice = data.candidates[0].content.parts[0].text;
+                    const formattedAdvice = advice
+                        .split('\n')
+                        .map(line => {
+                            if (line.startsWith('1.') || line.startsWith('2.') || line.startsWith('3.')) {
+                                return `<div class="highlight-point"><h4>${line}</h4></div>`;
+                            } else if (line.includes('%') || line.includes('$')) {
+                                return `<p class="key-stat">${line}</p>`;
+                            } else if (line.toLowerCase().includes('important') || line.toLowerCase().includes('note')) {
+                                return `<div class="important-note">${line}</div>`;
+                            } else {
+                                return `<p>${line}</p>`;
+                            }
+                        })
+                        .join('');
+                    aiResponse.innerHTML = formattedAdvice;
+                } else {
+                    aiResponse.textContent = 'Unable to get response from AI';
+                }
+            } catch (error) {
+                aiResponse.textContent = 'Error: Unable to connect to AI service. Please try again later.';
+                console.error('Error:', error);
+            } finally {
+                loading.style.display = 'none';
+            }
+
+            // Also show the loan suggestions
+            suggestLoans(score, loanType);
+        }
+
+        function suggestLoans(creditScore, loanType) {
+            const suggestionsList = document.getElementById('suggestionsList');
+            const loanSuggestions = document.getElementById('loanSuggestions');
+            suggestionsList.innerHTML = '';
+            
+            let suggestions = [];
+            
+            if (loanType === 'home') {
+                if (creditScore >= 800) {
+                    suggestions = [
+                        {
+                            name: 'Premium Mortgage',
+                            interest: '5.99%',
+                            maxAmount: '$1,000,000',
+                            term: '30 years',
+                            features: 'No PMI, Low closing costs, Flexible down payment options'
+                        },
+                        {
+                            name: 'Jumbo Loan',
+                            interest: '6.25%',
+                            maxAmount: '$2,000,000',
+                            term: '30 years',
+                            features: 'For high-value properties, Competitive rates'
+                        }
+                    ];
+                } else if (creditScore >= 700) {
+                    suggestions = [
+                        {
+                            name: 'Conventional Mortgage',
+                            interest: '6.75%',
+                            maxAmount: '$750,000',
+                            term: '30 years',
+                            features: 'Standard terms, Fixed rate'
+                        },
+                        {
+                            name: 'FHA Loan',
+                            interest: '6.50%',
+                            maxAmount: '$500,000',
+                            term: '30 years',
+                            features: 'Lower down payment requirements'
+                        }
+                    ];
+                } else if (creditScore >= 600) {
+                    suggestions = [
+                        {
+                            name: 'FHA Loan',
+                            interest: '7.25%',
+                            maxAmount: '$400,000',
+                            term: '30 years',
+                            features: 'Lower credit score requirements'
+                        },
+                        {
+                            name: 'VA Loan',
+                            interest: '7.00%',
+                            maxAmount: '$500,000',
+                            term: '30 years',
+                            features: 'For veterans, No down payment required'
+                        }
+                    ];
+                } else {
+                    suggestions = [
+                        {
+                            name: 'FHA Loan',
+                            interest: '8.50%',
+                            maxAmount: '$300,000',
+                            term: '30 years',
+                            features: 'Lower credit score requirements'
+                        },
+                        {
+                            name: 'Subprime Mortgage',
+                            interest: '9.50%',
+                            maxAmount: '$250,000',
+                            term: '30 years',
+                            features: 'For rebuilding credit'
+                        }
+                    ];
+                }
+            } else if (loanType === 'student') {
+                // ... existing student loan suggestions ...
+            } else if (loanType === 'personal') {
+                // ... existing personal loan suggestions ...
+            } else if (loanType === 'auto') {
+                if (creditScore >= 800) {
+                    suggestions = [
+                        {
+                            name: 'Premium Auto Loan',
+                            interest: '3.99%',
+                            maxAmount: '$100,000',
+                            term: 'Up to 7 years',
+                            features: 'No down payment required, Flexible terms'
+                        },
+                        {
+                            name: 'Luxury Vehicle Loan',
+                            interest: '4.25%',
+                            maxAmount: '$150,000',
+                            term: 'Up to 5 years',
+                            features: 'For high-end vehicles'
+                        }
+                    ];
+                } else if (creditScore >= 700) {
+                    suggestions = [
+                        {
+                            name: 'Standard Auto Loan',
+                            interest: '5.99%',
+                            maxAmount: '$75,000',
+                            term: 'Up to 5 years',
+                            features: 'Competitive rates'
+                        },
+                        {
+                            name: 'New Car Loan',
+                            interest: '6.25%',
+                            maxAmount: '$50,000',
+                            term: 'Up to 6 years',
+                            features: 'For new vehicles'
+                        }
+                    ];
+                } else if (creditScore >= 600) {
+                    suggestions = [
+                        {
+                            name: 'Basic Auto Loan',
+                            interest: '8.99%',
+                            maxAmount: '$40,000',
+                            term: 'Up to 5 years',
+                            features: 'Standard terms'
+                        },
+                        {
+                            name: 'Used Car Loan',
+                            interest: '9.50%',
+                            maxAmount: '$30,000',
+                            term: 'Up to 4 years',
+                            features: 'For used vehicles'
+                        }
+                    ];
+                } else {
+                    suggestions = [
+                        {
+                            name: 'Subprime Auto Loan',
+                            interest: '12.99%',
+                            maxAmount: '$25,000',
+                            term: 'Up to 4 years',
+                            features: 'Higher interest rates'
+                        },
+                        {
+                            name: 'Buy Here Pay Here',
+                            interest: '15.99%',
+                            maxAmount: '$15,000',
+                            term: 'Up to 3 years',
+                            features: 'For rebuilding credit'
+                        }
+                    ];
+                }
+            }
+
+            suggestions.forEach(suggestion => {
+                const suggestionDiv = document.createElement('div');
+                suggestionDiv.className = 'loan-suggestion-item';
+                suggestionDiv.innerHTML = `
+                    <h3>${suggestion.name}</h3>
+                    <p><span class="interest-rate">Interest Rate: ${suggestion.interest}</span></p>
+                    <p>Maximum Amount: ${suggestion.maxAmount}</p>
+                    <p>Term: ${suggestion.term}</p>
+                    <p>Features: ${suggestion.features}</p>
+                `;
+                suggestionsList.appendChild(suggestionDiv);
+            });
+
+            loanSuggestions.style.display = 'block';
+        }
+
+        async function learnAboutLoans() {
+            const loading = document.getElementById('loading');
+            const aiResponse = document.getElementById('aiResponse');
+            
+            loading.style.display = 'block';
+            aiResponse.textContent = '';
+
+            try {
+                const prompt = `As a financial expert, provide a comprehensive overview of different types of loans available to consumers. Include:
+                1. Home Loans (Mortgages)
+                2. Student Loans
+                3. Personal Loans
+                4. Auto Loans
+                5. Business Loans
+                6. Debt Consolidation Loans
+                7. Medical Loans
+                8. Wedding Loans
+                9. Vacation Loans
+                10. Home Improvement Loans
+                
+                For each type, explain:
+                - What it is
+                - Typical interest rates
+                - Common terms
+                - Best use cases
+                - Key considerations
+                
+                Keep the response clear and educational, around 500 words.`;
+
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAoYQA-k1emH9iypGE4FOwuC4W5HOcROQA', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: prompt
+                            }]
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                if (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) {
+                    const advice = data.candidates[0].content.parts[0].text;
+                    const formattedAdvice = advice
+                        .split('\n')
+                        .map(line => {
+                            if (line.match(/^\d+\./)) {
+                                return `<div class="highlight-point"><h4>${line}</h4></div>`;
+                            } else if (line.includes('%') || line.includes('$')) {
+                                return `<p class="key-stat">${line}</p>`;
+                            } else if (line.toLowerCase().includes('important') || line.toLowerCase().includes('note')) {
+                                return `<div class="important-note">${line}</div>`;
+                            } else {
+                                return `<p>${line}</p>`;
+                            }
+                        })
+                        .join('');
+                    aiResponse.innerHTML = formattedAdvice;
+                } else {
+                    aiResponse.textContent = 'Unable to get response from AI';
+                }
+            } catch (error) {
+                aiResponse.textContent = 'Error: Unable to connect to AI service. Please try again later.';
+                console.error('Error:', error);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // Add event listener for loan type selection
+        document.getElementById('loanType').addEventListener('change', function() {
+            const selectedLoanType = this.value;
+            if (selectedLoanType) {
+                explainLoanType(selectedLoanType);
+            }
+        });
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
